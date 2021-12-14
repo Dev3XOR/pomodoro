@@ -1,6 +1,14 @@
 import unittest
+from pomodoro import Clock
 
 
-class DummyTestCase(unittest.TestCase):
-    def test_two_plus_two(self):
-        self.assertEqual(2 + 2, 4)
+class ClockTestCase(unittest.TestCase):
+    def test_clock_is_running(self):
+        c = Clock()
+        # Check if this will not throw any errors
+        c.stop()
+        self.assertFalse(c.running)
+        c.start()
+        self.assertTrue(c.running)
+        c.stop()
+        self.assertFalse(c.running)
