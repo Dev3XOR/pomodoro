@@ -1,4 +1,5 @@
 import os
+import re
 import datetime
 import threading
 from tkinter import ttk, N, W, E, S, StringVar, Tk
@@ -9,6 +10,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 def format_time(sec):
     return str(datetime.timedelta(seconds=sec))
+
+
+def validate_number(newval):
+    return re.match("^[0-9]*$", newval) is not None
 
 
 class Clock:
@@ -52,18 +57,28 @@ class Pomodoro(Tk):
     def __init__(self):
         super().__init__()
         self.title("Pomodoro")
+        self.max_limit = StringVar(value="5")
 
-        timeout = StringVar(value=format_time(10))
+        timeout = StringVar(value=format_time(self.get_limit()))
+
+        validate_num_wrapper = (self.register(validate_number), "%P")
 
         frame = ttk.Frame(self, padding="3 3 12 12")
         clock = ttk.Label(frame, textvariable=timeout)
         restart = ttk.Button(frame, text="Start Clock", command=self.restart_clock)
         pause = ttk.Button(frame, text="Pause", command=self.stop_clock)
+        limit = ttk.Entry(
+            frame,
+            textvariable=self.max_limit,
+            validate="key",
+            validatecommand=validate_num_wrapper,
+        )
 
         frame.grid(column=0, row=0, sticky=(N, W, E, S))
         clock.grid(column=0, row=0, columnspan=2, sticky=(N, W, E, S))
-        restart.grid(column=0, row=1, sticky=(E, S))
-        pause.grid(column=1, row=1, sticky=(E, S))
+        limit.grid(column=0, row=1, columnspan=2, sticky=(W, E))
+        restart.grid(column=0, row=2, sticky=(E, S))
+        pause.grid(column=1, row=2, sticky=(E, S))
 
         def clock_update(seconds):
             timeout.set(format_time(seconds))
@@ -74,9 +89,12 @@ class Pomodoro(Tk):
 
         self.__clock = Clock(on_update=clock_update, on_ready=clock_ready)
 
+    def get_limit(self):
+        return int(self.max_limit.get()) * 60
+
     def restart_clock(self, *args):  # pylint: disable=W0613
         self.__clock.stop()
-        self.__clock.set_timeout(10)
+        self.__clock.set_timeout(self.get_limit())
         self.__clock.start()
 
     def stop_clock(self):
