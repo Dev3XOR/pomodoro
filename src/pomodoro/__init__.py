@@ -39,6 +39,10 @@ class Clock:
         timer.start()
         return timer
 
+    @property
+    def running(self):
+        return self.__interval is not None
+
     def start(self):
         self.__interval = self.__set_interval(1)
 
@@ -68,7 +72,7 @@ class Pomodoro(Tk):
         frame = ttk.Frame(self, padding="3 3 12 12")
         clock = ttk.Label(frame, textvariable=timeout)
         restart = ttk.Button(frame, text="Start Clock", command=self.restart_clock)
-        pause = ttk.Button(frame, text="Pause", command=self.stop_clock)
+        pause = ttk.Button(frame, text="Pause", command=self.toggle_clock)
         limit = ttk.Entry(
             frame,
             textvariable=self.max_limit,
@@ -108,3 +112,9 @@ class Pomodoro(Tk):
 
     def stop_clock(self):
         self.__clock.stop()
+
+    def toggle_clock(self):
+        if self.__clock.running:
+            self.__clock.stop()
+        else:
+            self.__clock.start()
