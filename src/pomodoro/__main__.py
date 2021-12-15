@@ -1,7 +1,5 @@
-from pomodoro import Pomodoro
+from pomodoro import main
 
 
 if __name__ == "__main__":
-    app = Pomodoro()
-    app.mainloop()
-    app.stop_clock()
+    main()

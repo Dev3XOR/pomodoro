@@ -118,3 +118,9 @@ class Pomodoro(Tk):
             self.__clock.stop()
         else:
             self.__clock.start()
+
+
+def main():
+    app = Pomodoro()
+    app.mainloop()
+    app.stop_clock()

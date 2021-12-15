@@ -2,7 +2,7 @@ all: format lint test
 
 clean:
 	rm -rf ./dist/*
-	rm -rf ./src/*.egg-info
+	find . -name "*.egg-info" | xargs rm -rf
 
 lint:
 	pylint --rcfile="./setup.cfg" ./src ./tests
