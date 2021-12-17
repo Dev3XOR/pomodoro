@@ -9,7 +9,7 @@ from playsound import playsound
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 W_WIDTH = 200
-W_HEIGHT = 120
+W_HEIGHT = 200
 
 
 def format_time(sec):
