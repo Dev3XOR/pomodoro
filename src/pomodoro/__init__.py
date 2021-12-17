@@ -64,11 +64,13 @@ class Clock:
 class Pomodoro(Tk):
     def __init__(self):
         super().__init__()
+        self.__paused = False
         self.title("Pomodoro")
         self.geometry(f"{W_WIDTH}x{W_HEIGHT}")
 
         # Store time limit in minutes
         self.max_limit = StringVar(value="5")
+        self.pause_btn_label = StringVar(value="Pause")
 
         timeout = StringVar(value=format_time(self.get_limit()))
         validate_num_wrapper = (self.register(validate_number), "%P")
@@ -77,7 +79,9 @@ class Pomodoro(Tk):
         clock = ttk.Label(frame, textvariable=timeout, font=("TkHeadingFont", 24))
         clock.configure(anchor="center")
         restart = ttk.Button(frame, text="Start Clock", command=self.restart_clock)
-        pause = ttk.Button(frame, text="Pause", command=self.toggle_clock)
+        pause = ttk.Button(
+            frame, textvariable=self.pause_btn_label, command=self.toggle_clock
+        )
         dec_max_limit = ttk.Button(
             frame, text="-", width=2, command=self.decrement_limit
         )
@@ -126,13 +130,13 @@ class Pomodoro(Tk):
 
         def clock_ready():
             timeout.set(format_time(0))
-            playsound(os.path.join(BASE_DIR, "assets", "alarm-default.mp3"))
             notification.notify(
                 title="Time's Up!",
                 message="Your timer has reached 0",
                 app_icon=None,
-                timeout=25,
+                timeout=20,
             )
+            playsound(os.path.join(BASE_DIR, "assets", "alarm-default.mp3"))
 
         self.__clock = Clock(on_update=clock_update, on_ready=clock_ready)
 
@@ -151,14 +155,22 @@ class Pomodoro(Tk):
         self.max_limit.set(oldval - 1)
 
     def restart_clock(self, *args):  # pylint: disable=W0613
+        self.__paused = False
+        self.update_pause_label()
         self.__clock.stop()
         self.__clock.set_timeout(self.get_limit())
         self.__clock.start()
+
+    def update_pause_label(self):
+        message = "Resume" if self.__paused else "Pause"
+        self.pause_btn_label.set(message)
 
     def stop_clock(self):
         self.__clock.stop()
 
     def toggle_clock(self):
+        self.__paused = not self.__paused
+        self.update_pause_label()
         if self.__clock.running:
             self.__clock.stop()
         else:
