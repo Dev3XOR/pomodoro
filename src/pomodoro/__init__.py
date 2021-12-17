@@ -131,7 +131,7 @@ class Pomodoro(Tk):
                 title="Time's Up!",
                 message="Your timer has reached 0",
                 app_icon=None,
-                timeout=10,
+                timeout=25,
             )
 
         self.__clock = Clock(on_update=clock_update, on_ready=clock_ready)
