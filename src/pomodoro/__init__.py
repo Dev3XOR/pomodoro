@@ -3,7 +3,7 @@ import os
 import re
 import datetime
 import threading
-from tkinter import ttk, N, W, E, S, StringVar, Tk
+from tkinter import ttk, N, W, E, S, PhotoImage, StringVar, Tk
 from plyer import notification
 from playsound import playsound
 
@@ -67,6 +67,10 @@ class Pomodoro(Tk):
         self.__paused = False
         self.title("Pomodoro")
         self.geometry(f"{W_WIDTH}x{W_HEIGHT}")
+
+        # Set window icon
+        icon_image = PhotoImage(file=os.path.join(BASE_DIR, "assets", "icon.png"))
+        self.tk.call("wm", "iconphoto", self._w, icon_image)
 
         # Store time limit in minutes
         self.max_limit = StringVar(value="5")
