@@ -9,7 +9,7 @@ from playsound import playsound
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 W_WIDTH = 200
-W_HEIGHT = 200
+W_HEIGHT = 220
 
 
 def format_time(sec):
@@ -74,7 +74,7 @@ class Pomodoro(Tk):
         validate_num_wrapper = (self.register(validate_number), "%P")
 
         frame = ttk.Frame(self, padding="3 3 12 12")
-        clock = ttk.Label(frame, textvariable=timeout)
+        clock = ttk.Label(frame, textvariable=timeout, font=("TkHeadingFont", 24))
         clock.configure(anchor="center")
         restart = ttk.Button(frame, text="Start Clock", command=self.restart_clock)
         pause = ttk.Button(frame, text="Pause", command=self.toggle_clock)
