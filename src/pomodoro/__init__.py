@@ -7,6 +7,8 @@ from plyer import notification
 from playsound import playsound
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+W_WIDTH = 200
+W_HEIGHT = 120
 
 
 def format_time(sec):
@@ -62,6 +64,7 @@ class Pomodoro(Tk):
     def __init__(self):
         super().__init__()
         self.title("Pomodoro")
+        self.geometry(f"{W_WIDTH}x{W_HEIGHT}")
 
         # Store time limit in minutes
         self.max_limit = StringVar(value="5")
@@ -71,20 +74,31 @@ class Pomodoro(Tk):
 
         frame = ttk.Frame(self, padding="3 3 12 12")
         clock = ttk.Label(frame, textvariable=timeout)
+        clock.configure(anchor="center")
         restart = ttk.Button(frame, text="Start Clock", command=self.restart_clock)
         pause = ttk.Button(frame, text="Pause", command=self.toggle_clock)
+        dec_max_limit = ttk.Button(frame, text="-", width=2, command=self.decrement_limit)
+        inc_max_limit = ttk.Button(frame, text="+", width=2, command=self.increment_limit)
+        fill_text = ttk.Label(frame, text="minutes")
         limit = ttk.Entry(
             frame,
+            width=4,
             textvariable=self.max_limit,
             validate="key",
             validatecommand=validate_num_wrapper,
         )
 
-        frame.grid(column=0, row=0, sticky=(N, W, E, S))
-        clock.grid(column=0, row=0, columnspan=2, sticky=(N, W, E, S))
-        limit.grid(column=0, row=1, columnspan=2, sticky=(W, E))
-        restart.grid(column=0, row=2, sticky=(W, S))
-        pause.grid(column=1, row=2, sticky=(E, S))
+        for child in frame.winfo_children():
+            child.grid_configure(padx=5, pady=5)
+
+        frame.grid(row=0, column=0, sticky=(N, W, E, S))
+        clock.grid(row=0, column=0, columnspan=4, sticky=(W, E))
+        dec_max_limit.grid(row=1, column=0, sticky=W)
+        limit.grid(row=1, column=1)
+        inc_max_limit.grid(row=1, column=2)
+        fill_text.grid(row=1, column=3, sticky=E)
+        restart.grid(row=2, column=0,columnspan=2, sticky=W)
+        pause.grid(row=2, column=2, columnspan=2, sticky=E)
 
         def clock_update(seconds):
             timeout.set(format_time(seconds))
@@ -104,6 +118,16 @@ class Pomodoro(Tk):
     def get_limit(self):
         """Return max tim limit in seconds"""
         return int(self.max_limit.get()) * 60
+
+    def increment_limit(self):
+        newval = int(self.max_limit.get()) + 1
+        self.max_limit.set(newval)
+
+    def decrement_limit(self):
+        oldval = int(self.max_limit.get())
+        if oldval <= 1:
+            return
+        self.max_limit.set(oldval - 1)
 
     def restart_clock(self, *args):  # pylint: disable=W0613
         self.__clock.stop()
