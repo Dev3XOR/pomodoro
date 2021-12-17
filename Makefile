@@ -19,4 +19,4 @@ build:
 	python -m build
 
 publish: build
-	python -m twine upload --repository testpypi dist/*
+	python -m twine upload dist/*
