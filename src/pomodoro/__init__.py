@@ -87,6 +87,10 @@ class Pomodoro(Tk):
             validate="key",
             validatecommand=validate_num_wrapper,
         )
+        pre_5_min = ttk.Button(frame, text="5 min.", command=lambda: self.max_limit.set(5))
+        pre_10_min = ttk.Button(frame, text="10 min.", command=lambda: self.max_limit.set(10))
+        pre_25_min = ttk.Button(frame, text="25 min.", command=lambda: self.max_limit.set(25))
+        pre_30_min = ttk.Button(frame, text="30 min.", command=lambda: self.max_limit.set(30))
 
         for child in frame.winfo_children():
             child.grid_configure(padx=5, pady=5)
@@ -99,6 +103,10 @@ class Pomodoro(Tk):
         fill_text.grid(row=1, column=3, sticky=E)
         restart.grid(row=2, column=0,columnspan=2, sticky=W)
         pause.grid(row=2, column=2, columnspan=2, sticky=E)
+        pre_5_min.grid(row=3, column=0, columnspan=2, sticky=W)
+        pre_10_min.grid(row=3, column=2, columnspan=2, sticky=E)
+        pre_25_min.grid(row=4, column=0, columnspan=2, sticky=W)
+        pre_30_min.grid(row=4, column=2, columnspan=2, sticky=E)
 
         def clock_update(seconds):
             timeout.set(format_time(seconds))
