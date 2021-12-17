@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pomodoro-Dev3XoR",
-    version="0.8.2",
+    version="0.8.3",
     author="Dev3XoR",
     author_email="devexor@protonmail.com",
     description="Pomodoro clock and timer",
@@ -13,7 +13,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Dev3XOR/pomodoro/",
     license_file="LICENSE",
-    packages=setuptools.find_packages(include=["pomodoro"]),
+    package_dir={"": "src"},
+    packages=["pomodoro"],
     include_package_data=True,
     zip_safe=True,
     classifiers=[
