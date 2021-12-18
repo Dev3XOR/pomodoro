@@ -7,9 +7,10 @@ from tkinter import ttk, N, W, E, S, PhotoImage, StringVar, Tk
 from plyer import notification
 from playsound import playsound
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(__file__)
+THEME = "clam"
 W_WIDTH = 240
-W_HEIGHT = 270
+W_HEIGHT = 275
 
 
 def format_time(sec):
@@ -186,6 +187,6 @@ def main():
     app = Pomodoro()
     app.title("Pomodoro")
     app.geometry(f"{W_WIDTH}x{W_HEIGHT}")
-    ttk.Style().theme_use("clam")
+    ttk.Style().theme_use(THEME)
     app.mainloop()
     app.stop_clock()
