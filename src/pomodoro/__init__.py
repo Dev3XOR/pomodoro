@@ -8,8 +8,8 @@ from plyer import notification
 from playsound import playsound
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-W_WIDTH = 200
-W_HEIGHT = 220
+W_WIDTH = 240
+W_HEIGHT = 270
 
 
 def format_time(sec):
@@ -65,12 +65,13 @@ class Pomodoro(Tk):
     def __init__(self):
         super().__init__()
         self.__paused = False
-        self.title("Pomodoro")
-        self.geometry(f"{W_WIDTH}x{W_HEIGHT}")
 
         # Set window icon
         icon_image = PhotoImage(file=os.path.join(BASE_DIR, "assets", "icon.png"))
         self.tk.call("wm", "iconphoto", self._w, icon_image)
+
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
 
         # Store time limit in minutes
         self.max_limit = StringVar(value="5")
@@ -79,8 +80,8 @@ class Pomodoro(Tk):
         timeout = StringVar(value=format_time(self.get_limit()))
         validate_num_wrapper = (self.register(validate_number), "%P")
 
-        frame = ttk.Frame(self, padding="3 3 12 12")
-        clock = ttk.Label(frame, textvariable=timeout, font=("TkHeadingFont", 24))
+        frame = ttk.Frame(self, padding="3 12")
+        clock = ttk.Label(frame, textvariable=timeout, font=("TkHeadingFont", 32))
         clock.configure(anchor="center")
         restart = ttk.Button(frame, text="Start Clock", command=self.restart_clock)
         pause = ttk.Button(
@@ -116,18 +117,18 @@ class Pomodoro(Tk):
         for child in frame.winfo_children():
             child.grid_configure(padx=5, pady=5)
 
-        frame.grid(row=0, column=0, sticky=(N, W, E, S))
-        clock.grid(row=0, column=0, columnspan=4, sticky=(W, E))
+        frame.grid(row=0, column=0, sticky="nsew")
+        clock.grid(row=0, column=0, columnspan=4, sticky="nsew")
         dec_max_limit.grid(row=1, column=0, sticky=W)
         limit.grid(row=1, column=1)
         inc_max_limit.grid(row=1, column=2)
         fill_text.grid(row=1, column=3, sticky=E)
-        restart.grid(row=2, column=0, columnspan=2, sticky=W)
-        pause.grid(row=2, column=2, columnspan=2, sticky=E)
-        pre_5_min.grid(row=3, column=0, columnspan=2, sticky=W)
-        pre_10_min.grid(row=3, column=2, columnspan=2, sticky=E)
-        pre_25_min.grid(row=4, column=0, columnspan=2, sticky=W)
-        pre_30_min.grid(row=4, column=2, columnspan=2, sticky=E)
+        restart.grid(row=2, column=0, columnspan=2, sticky="nswe")
+        pause.grid(row=2, column=2, columnspan=2, sticky="nswe")
+        pre_5_min.grid(row=3, column=0, columnspan=2, sticky="nswe")
+        pre_10_min.grid(row=3, column=2, columnspan=2, sticky="nswe")
+        pre_25_min.grid(row=4, column=0, columnspan=2, sticky="nswe")
+        pre_30_min.grid(row=4, column=2, columnspan=2, sticky="nswe")
 
         def clock_update(seconds):
             timeout.set(format_time(seconds))
@@ -183,5 +184,8 @@ class Pomodoro(Tk):
 
 def main():
     app = Pomodoro()
+    app.title("Pomodoro")
+    app.geometry(f"{W_WIDTH}x{W_HEIGHT}")
+    ttk.Style().theme_use("clam")
     app.mainloop()
     app.stop_clock()
