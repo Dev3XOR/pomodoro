@@ -3,7 +3,7 @@ import os
 import re
 import datetime
 import threading
-from tkinter import ttk, N, W, E, S, PhotoImage, StringVar, Tk
+from tkinter import ttk, PhotoImage, StringVar, Tk
 from plyer import notification
 from playsound import playsound
 
@@ -120,10 +120,10 @@ class Pomodoro(Tk):
 
         frame.grid(row=0, column=0, sticky="nsew")
         clock.grid(row=0, column=0, columnspan=4, sticky="nsew")
-        dec_max_limit.grid(row=1, column=0, sticky=W)
+        dec_max_limit.grid(row=1, column=0, sticky="w")
         limit.grid(row=1, column=1)
         inc_max_limit.grid(row=1, column=2)
-        fill_text.grid(row=1, column=3, sticky=E)
+        fill_text.grid(row=1, column=3, sticky="e")
         restart.grid(row=2, column=0, columnspan=2, sticky="nswe")
         pause.grid(row=2, column=2, columnspan=2, sticky="nswe")
         pre_5_min.grid(row=3, column=0, columnspan=2, sticky="nswe")
