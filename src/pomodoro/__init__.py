@@ -9,8 +9,8 @@ from playsound import playsound
 
 BASE_DIR = os.path.dirname(__file__)
 THEME = "clam"
-W_WIDTH = 240
-W_HEIGHT = 275
+WINDOW_WIDTH = 240
+WINDOW_HEIGHT = 275
 
 
 def format_time(sec):
@@ -139,7 +139,6 @@ class Pomodoro(Tk):
             notification.notify(
                 title="Time's Up!",
                 message="Your timer has reached 0",
-                app_icon=None,
                 timeout=20,
             )
             playsound(os.path.join(BASE_DIR, "assets", "alarm-default.mp3"))
@@ -186,7 +185,7 @@ class Pomodoro(Tk):
 def main():
     app = Pomodoro()
     app.title("Pomodoro")
-    app.geometry(f"{W_WIDTH}x{W_HEIGHT}")
+    app.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
     ttk.Style().theme_use(THEME)
     app.mainloop()
     app.stop_clock()
